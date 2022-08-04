@@ -51,5 +51,11 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
             return await _db.LoadSingle<QuestionModel>(sql);
         }
+
+        public async Task<bool> deleteQuestionsByExamIdAsync(int examID) {
+            string sql = $"delete from question where examID = {examID}";
+
+            return await _db.insertData(sql);
+        }
     }
 }

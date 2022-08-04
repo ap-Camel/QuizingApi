@@ -1,3 +1,4 @@
+using QuizingApi.Dtos.AnswerDtos;
 using QuizingApi.Dtos.ExamDtos;
 using QuizingApi.Dtos.QuestionDtos;
 using QuizingApi.Dtos.WebUserDtos;
@@ -29,6 +30,7 @@ namespace QuizingApi.Helpers {
 
         public static QuestionEssentialsDto toQuestionEssentials(QuestionModel q) {
             return new QuestionEssentialsDto {
+                ID = q.ID,
                 question = q.question,
                 difficulty = q.difficulty,
                 dateCreated = q.dateCreated,
@@ -36,6 +38,20 @@ namespace QuizingApi.Helpers {
                 questionType = q.questionType,
                 hasImage = q.hasImage,
                 imgUrl = q.imgUrl
+            };
+        }
+
+        public static AnswerEssentialsDto toAnswerEssentials(AnswerModel a) {
+            return new AnswerEssentialsDto {
+                ID = a.ID,
+                correct = a.correct,
+                answer = a.answer,
+                active = a.active,
+                dateCreated = a.dateCreated,
+                dateUpdated = a.dateUpdated,
+                hasImage = a.hasImage,
+                imgUrl = a.imgUrl,
+                questionID = a.questionID
             };
         }
     }

@@ -84,21 +84,21 @@ namespace QuizingApi.Controllers {
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> deleteQuestionAsync(int id){
+        // [HttpDelete("{id}")]
+        // public async Task<ActionResult<bool>> deleteQuestionAsync(int id){
 
-            int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
+        //     int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            var verifyQuestion = await questionData.verifyQuestionOwnerAsync(userID, id);
+        //     var verifyQuestion = await questionData.verifyQuestionOwnerAsync(userID, id);
 
-            if(verifyQuestion is null) {
-                return StatusCode(StatusCodes.Status403Forbidden);
-            }
+        //     if(verifyQuestion is null) {
+        //         return StatusCode(StatusCodes.Status403Forbidden);
+        //     }
 
-            var result = await questionData.deleteQuestionAsync(id, verifyQuestion.examID);
+        //     var result = await questionData.deleteQuestionAsync(id, verifyQuestion.examID);
 
-            return result ? StatusCode(StatusCodes.Status204NoContent) : BadRequest("failed to updated question");
-        }
+        //     return result ? StatusCode(StatusCodes.Status204NoContent) : BadRequest("failed to updated question");
+        // }
 
     }
 }

@@ -1,5 +1,6 @@
 namespace QuizingApi.Dtos.QuestionDtos {
     public record QuestionEssentialsDto {
+        public int ID {get; init;}
         public string question {get; init;}
         public int difficulty {get; init;}
         public DateTime dateCreated {get; init;}

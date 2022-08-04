@@ -16,8 +16,12 @@ namespace QuizingApi.Dtos.QuestionDtos {
 
         [Required(ErrorMessage = "question type is required")]
         public string questionType {get; init;}
-        public bool? hasImage {get; init;} = false;
-        public string? imgUrl {get; init;} = string.Empty;
+
+        [Required(ErrorMessage = "hasImage is required")]
+        public bool hasImage {get; init;} = false;
+
+        [Required(ErrorMessage = "img url type is required")]
+        public string imgUrl {get; init;} = string.Empty;
 
         [Required(ErrorMessage = "exam id is required")]
         public int examID {get; init;}
