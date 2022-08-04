@@ -6266,11 +6266,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Dev\\Cs\\learning\\quizingApi\\quizingApi.csproj",
+      "projectUniqueName": "C:\\Dev\\Cs\\learning\\quizingApi\\quizingApi.csproj",
       "projectName": "quizingApi",
-      "projectPath": "c:\\Dev\\Cs\\learning\\quizingApi\\quizingApi.csproj",
+      "projectPath": "C:\\Dev\\Cs\\learning\\quizingApi\\quizingApi.csproj",
       "packagesPath": "C:\\Users\\Ayman\\.nuget\\packages\\",
-      "outputPath": "c:\\Dev\\Cs\\learning\\quizingApi\\obj\\",
+      "outputPath": "C:\\Dev\\Cs\\learning\\quizingApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
