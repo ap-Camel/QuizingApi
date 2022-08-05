@@ -17,6 +17,7 @@ builder.Services.AddSingleton<IWebUserData, WebUserData>();
 builder.Services.AddSingleton<IExamData, ExamData>();
 builder.Services.AddSingleton<IQuestionData, QuestionData>();
 builder.Services.AddSingleton<IAnswerData, AnswerData>();
+builder.Services.AddSingleton<IChoosenQAData, ChoosenQAData>();
 
 
 builder.Services.AddCors(options =>
