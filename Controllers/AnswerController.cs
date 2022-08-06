@@ -49,11 +49,11 @@ namespace QuizingApi.Controllers {
         }
 
 
-        [HttpGet("/question/{id}")]
-        public async Task<ActionResult<List<AnswerEssentialsDto>>> getAnswersByQuestoinIdAsync(int id) {
+        [HttpGet("/question/{questionId}")]
+        public async Task<ActionResult<List<AnswerEssentialsDto>>> getAnswersByQuestoinIdAsync(int questionId) {
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            var result = await answerData.getAnswersByQuestionIdAync(id, userID);
+            var result = await answerData.getAnswersByQuestionIdAync(questionId, userID);
 
             if(result.Count() == 0) {
                 return NotFound("no answers were found");

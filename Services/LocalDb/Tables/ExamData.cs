@@ -24,7 +24,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
         public async Task<int> insertExamAsync(ExamInsertDto exam, int userID) {
-            string sql = $"insert into exam output inserted.id values ('{exam.title}', {exam.numOfQuestions}, {exam.duration}, {Convert.ToInt16(exam.active)}, {exam.difficulty}, default, default, {userID}";
+            string sql = $"insert into exam output inserted.id values ('{exam.title}', {exam.numOfQuestions}, {exam.duration}, {Convert.ToInt16(exam.active)}, {exam.difficulty}, default, default, {userID})";
 
             return await _db.insertDataWithReturn(sql);
         }
