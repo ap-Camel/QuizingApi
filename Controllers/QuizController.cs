@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizingApi.Dtos.CustomeDtos;
+using QuizingApi.Dtos.QuestionDtos;
 using QuizingApi.Helpers;
 using QuizingApi.Models;
 using QuizingApi.Services.LocalDb.Interfaces;
@@ -14,10 +15,12 @@ namespace QuizingApi.Controllers {
 
         private readonly IExamData examData;
         private readonly IQuestionData questionData;
+        private readonly IAnswerData answerData;
 
-        public QuizController(IExamData examData, IQuestionData questionData) {
+        public QuizController(IExamData examData, IQuestionData questionData, IAnswerData answerData) {
             this.examData = examData;
             this.questionData = questionData;
+            this.answerData = answerData;
         }
 
         [HttpGet("{id}")]
@@ -28,11 +31,26 @@ namespace QuizingApi.Controllers {
             var exam = await examData.getExamAsync(userID, id);
             var questions = await questionData.getQuestionsByExamIdAsync(exam.ID);
 
-            var result = randomizeQuestions(questions.ToList(), exam.difficulty, exam.numOfQuestions);
-            
-            return Ok(result);
-        }
+            QuizSendDto send = new QuizSendDto();
+            List<QuestionMinimumDto> tempList = new List<QuestionMinimumDto>();
+            send.examID = exam.ID;
 
+            var result = randomizeQuestions(questions.ToList(), exam.difficulty, exam.numOfQuestions);
+
+            foreach(QuestionModel q in result) {
+                var answers = await answerData.getAnswersByQuestionIdAync(q.ID, userID);
+                List<string> randomizedAnswers = randomizeAnswers(answers.ToList());
+                QuestionMinimumDto temp = new QuestionMinimumDto {
+                    question = q.question,
+                    answers = randomizedAnswers
+                };
+                tempList.Add(temp);
+            }
+
+            send.quiz = tempList;
+            
+            return Ok(send);
+        }
 
 
         private QuestionModel[] randomizeQuestions(List<QuestionModel> list, int difficulty, int num) {
@@ -108,18 +126,55 @@ namespace QuizingApi.Controllers {
                 } 
             }
 
-            // List<QuestionModel> veryHards = list.Where(question => question.difficulty == 5).ToList();
-            // for(int i = 0; i < veryHards.Count();) {
-            //     index = rand.Next(0, count);
-            //     if(arr[index] == null) {
-            //         choosen = rand.Next(0, veryHards.Count());
-            //         arr[index] = veryHards[choosen];
-            //         veryHards.RemoveAt(choosen);
-            //         i++;
-            //     }
-            // }
-
             return arr;
+        }
+
+        private List<string> randomizeAnswers(List<AnswerModel> list) {
+
+            Random rand = new Random();
+
+            List<AnswerModel> corrects = list.Where( x => x.correct == true ).ToList();
+            List<AnswerModel> wrongs = list.Where(x => x.correct == false).ToList();
+
+            AnswerModel correctAnswer;
+            if(corrects.Count() == 0) {
+                correctAnswer = new AnswerModel {answer = ""};
+            }
+
+            int index = rand.Next(0, corrects.Count());
+            correctAnswer = corrects[index];
+
+            int count = correctAnswer.answer != "" ? wrongs.Count() + 1 : wrongs.Count();
+            if(count > 4) {
+                count = 4;
+            }
+
+            AnswerModel[] arr = new AnswerModel[count];
+            int num = rand.Next(count);
+            arr[num] = correctAnswer.answer != "" ? correctAnswer : null;
+
+            for(int i = 0; i < count;) {
+
+                if(arr[i] == correctAnswer) {
+                    i++;
+                    continue;
+                }
+
+                num = rand.Next(wrongs.Count());
+                if(arr[i] is null) {
+                    arr[i] = wrongs[num];
+                    wrongs.RemoveAt(num);
+                    i++;
+
+                }
+            }
+
+            List<string> newList = new List<string>();
+            foreach(AnswerModel answer in arr) {
+                newList.Add(answer.answer);
+            }
+
+             return newList;
         }
 
     }
