@@ -21,6 +21,12 @@ namespace QuizingApi.Services.LocalDb.Tables {
             return await _db.LoadSingle<AnswerModel>(sql);
         }
 
+        public async Task<AnswerModel> getAnswerByIdAsync(int answerID) {
+            string sql = $"select top 1 * from answer where ID = {answerID}";
+
+            return await _db.LoadSingle<AnswerModel>(sql);
+        }
+
 
         public async Task<IEnumerable<AnswerModel>> getAnswersByUserIdAsync(int userID) {
             string sql = "select answer.* from answer " + 

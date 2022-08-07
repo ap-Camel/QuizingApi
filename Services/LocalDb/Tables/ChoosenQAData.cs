@@ -36,7 +36,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
         public async Task<int> insertCQA_WithoutAnswerAsync(ChoosenQAInsertDto insert) {
-            string sql = $"insert into choosenQuestionsAnswers output inserted.id values({insert.questionID}, null, {insert.examinationID})";
+            string sql = $"insert into choosenQuestionsAnswers output inserted.id values({insert.questionID}, null, {insert.examinationID}, default)";
 
             return await _db.insertDataWithReturn(sql);
         }
