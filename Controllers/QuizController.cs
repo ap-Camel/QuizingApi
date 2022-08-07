@@ -23,6 +23,12 @@ namespace QuizingApi.Controllers {
             this.answerData = answerData;
         }
 
+
+        // must add protection against user sending questionID that they didnt recieve for their exam
+        // must add protection for if user sends back more qustions with answers than the exam has
+        // when evaluating, should also add to the table handling the quiz history
+        
+
         [HttpGet("{id}")]
         public async Task<ActionResult> getQuizAsync(int id) {
 
@@ -41,6 +47,7 @@ namespace QuizingApi.Controllers {
                 var answers = await answerData.getAnswersByQuestionIdAync(q.ID, userID);
                 List<string> randomizedAnswers = randomizeAnswers(answers.ToList());
                 QuestionMinimumDto temp = new QuestionMinimumDto {
+                    questionID = q.ID,
                     question = q.question,
                     answers = randomizedAnswers
                 };
@@ -50,6 +57,26 @@ namespace QuizingApi.Controllers {
             send.quiz = tempList;
             
             return Ok(send);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult<int>> evaluateQuiz(QuizRecieveDto quiz) {
+
+            int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
+
+            int mark = 0;
+
+            QuestionModel tempQ = new QuestionModel();
+            AnswerModel tempA = new AnswerModel();
+            foreach(QuestionEvaluateDto q in quiz.quiz) {
+                var result = await answerData.checkAnswerAsync(q.answer, q.questionID);
+                if(result is not null) {
+                    mark += 1;
+                }
+            }
+
+            return Ok(mark);
         }
 
 

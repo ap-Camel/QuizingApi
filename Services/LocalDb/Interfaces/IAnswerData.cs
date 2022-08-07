@@ -10,6 +10,6 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<bool> updateAnswerAsync(AnswerUpdateDto answer);
         Task<bool> deleteAnswerAsync(int answerID, int questionID);
         Task<bool> deleteAnswerByQuestionIdAsync(int questionID);
-
+        Task<AnswerModel> checkAnswerAsync(string answer, int questionID);
     }
 }

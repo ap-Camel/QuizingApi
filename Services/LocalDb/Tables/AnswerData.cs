@@ -68,5 +68,11 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
             return await _db.insertData(sql);
         }
+
+        public async Task<AnswerModel> checkAnswerAsync(string answer, int questionID) {
+            string sql = $"select top 1 * from answer where answer = '{answer}' and questionID = {questionID} and correct = 1";
+
+            return await _db.LoadSingle<AnswerModel>(sql);
+        }
     }
 }
