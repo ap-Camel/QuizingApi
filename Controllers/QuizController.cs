@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizingApi.Dtos.CustomeDtos;
+using QuizingApi.Dtos.ExaminationDtos;
 using QuizingApi.Dtos.QuestionDtos;
+using QuizingApi.DtosChoosenQuestionAnswersDtos;
 using QuizingApi.Helpers;
 using QuizingApi.Models;
 using QuizingApi.Services.LocalDb.Interfaces;
@@ -16,18 +18,23 @@ namespace QuizingApi.Controllers {
         private readonly IExamData examData;
         private readonly IQuestionData questionData;
         private readonly IAnswerData answerData;
+        private readonly IExaminationData examinationData;
+        private readonly IChoosenQAData choosenQAData;
 
-        public QuizController(IExamData examData, IQuestionData questionData, IAnswerData answerData) {
+        public QuizController(IExamData examData, IQuestionData questionData, 
+                                IAnswerData answerData, IExaminationData examinationData, IChoosenQAData choosenQAData) {
             this.examData = examData;
             this.questionData = questionData;
             this.answerData = answerData;
+            this.examinationData = examinationData;
+            this.choosenQAData = choosenQAData;
         }
 
 
         // must add protection against user sending questionID that they didnt recieve for their exam
         // must add protection for if user sends back more qustions with answers than the exam has
         // when evaluating, should also add to the table handling the quiz history
-        
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult> getQuizAsync(int id) {
@@ -55,8 +62,43 @@ namespace QuizingApi.Controllers {
             }
 
             send.quiz = tempList;
-            
-            return Ok(send);
+
+            var insertResult = await examinationData.insertExaminationAsync(new ExaminationInsertDto { examID = exam.ID, userID = userID, result = 0 });
+            if(insertResult > 0) {
+                send.examinationID = insertResult;
+                int[] tempArr = new int[tempList.Count()];
+                bool failed = false;
+                for(int i = 0; i < tempArr.Count(); i++) {
+                    tempArr[i] = await choosenQAData.insertCQA_WithoutAnswerAsync(new ChoosenQAInsertDto { 
+                        questionID = tempList[i].questionID,
+                        answerID = 0,
+                        examinationID = insertResult
+                        });
+                    if(tempArr[i] <= 0) {
+                        failed = true;
+                    }
+                }
+
+                if(failed) {
+                    bool deleteFailed = false;
+                    foreach(int i in tempArr) {
+                        bool deleteResult = await choosenQAData.deleteCQA_ByIdAsync(i, insertResult);
+                        if(!deleteResult) {
+                            deleteFailed = false;
+                        }
+                    }
+
+                    if(deleteFailed) {
+                        return BadRequest("failed to create quiz, failed to insert to history, and failed to delete the ones for the cleanup");
+                    }
+
+                    return BadRequest("failed to create quiz, failed to insert to history");
+                }
+
+                return Ok(send);
+            }
+
+            return BadRequest("failed to create examination");
         }
 
 
@@ -65,18 +107,58 @@ namespace QuizingApi.Controllers {
 
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            int mark = 0;
+            List<int> questionIds = (await choosenQAData.getQuestionIdsFromExaminationAsync(quiz.examinationID, userID)).ToList();
+            ExamModel exam = await examData.getExamByIdAsync(quiz.examID);
+            ExaminationModel examination = await examinationData.getExaminationByUserIdAsync(quiz.examinationID, userID);
 
-            QuestionModel tempQ = new QuestionModel();
-            AnswerModel tempA = new AnswerModel();
+            if(examination.evaluated) {
+                return BadRequest("examination has already been evaluated");
+            }
+
+            DateTime currentDate = DateTime.Now;
+            if((currentDate - examination.atDate).TotalMinutes > exam.duration) {
+                return BadRequest("the examination period has expired");
+            }
+
+            if(quiz.quiz.Count() > exam.numOfQuestions) {
+                return BadRequest("evaluation failed, number of returned question exceeds the exam limit");
+            }
+
+            bool extraQuestions = false;
             foreach(QuestionEvaluateDto q in quiz.quiz) {
-                var result = await answerData.checkAnswerAsync(q.answer, q.questionID);
-                if(result is not null) {
-                    mark += 1;
+                if(!questionIds.Contains(q.questionID)) {
+                    extraQuestions = true;
                 }
             }
 
-            return Ok(mark);
+            if(extraQuestions) {
+                return BadRequest("evaluation failed, a question was recieved that wasnt sent to the user");
+            }
+
+            int mark = 0;
+
+            // QuestionModel tempQ = new QuestionModel();
+            AnswerModel tempA = new AnswerModel();
+            bool updateFailed = false;
+            foreach(QuestionEvaluateDto q in quiz.quiz) {
+                var answerResult = await answerData.checkAnswerAsync(q.answer, q.questionID);
+                var updateCQA_Result = await choosenQAData.updateCQA_AnswerIdAsync(answerResult.ID, q.questionID, quiz.examinationID);
+                if(answerResult.correct == true) {
+                    mark += 1;
+                }
+                if(!updateCQA_Result) {
+                    updateFailed = true;
+                }
+            }
+
+            string message = "";
+            if(updateFailed) {
+                message += ", failed to update answer in history";
+            }
+
+            var updateResult = await examinationData.updateExaminationResultAsync(mark, quiz.examinationID, userID);
+
+            return updateResult ? Ok(mark) : BadRequest("failed to set examination result" + message);
         }
 
 

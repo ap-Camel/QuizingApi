@@ -34,5 +34,29 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
             return await _db.insertDataWithReturn(sql);
         }
+
+        public async Task<int> insertCQA_WithoutAnswerAsync(ChoosenQAInsertDto insert) {
+            string sql = $"insert into choosenQuestionsAnswers output inserted.id values({insert.questionID}, null, {insert.examinationID})";
+
+            return await _db.insertDataWithReturn(sql);
+        }
+
+        public async Task<bool> deleteCQA_ByIdAsync(int CQA_id, int examinationID) {
+            string sql = $"delete from choosenQuestionsAnswers where ID = {CQA_id} and examinationID = {examinationID}";
+
+            return await _db.insertData(sql);
+        }
+
+        public async Task<bool> updateCQA_AnswerIdAsync(int answerID, int questionID, int examinationID) {
+            string sql = $"update choosenQuestionsAnswers set answerID = {answerID} where questionID = {questionID} and examinationID = {examinationID}";
+
+            return await _db.insertData(sql);
+        }
+
+        public async Task<IEnumerable<int>> getQuestionIdsFromExaminationAsync(int examinationID, int userID) {
+            string sql = $"select questionID from choosenQuestionsAnswers where examinationID = {examinationID}";
+
+            return await _db.LoadMany<int>(sql);
+        }
     }
 }

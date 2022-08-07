@@ -14,7 +14,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
 
-        public async Task<IEnumerable<ExaminationModel>> getExaminationsAsyncByUserIdAsync(int userID)
+        public async Task<IEnumerable<ExaminationModel>> getExaminationsByUserIdAsync(int userID)
         {
             string sql = $"select * from examination where userID = {userID}";
 
@@ -31,9 +31,15 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
         public async Task<int> insertExaminationAsync(ExaminationInsertDto e)
         {
-            string sql = $"insert into examination output inserted.id values ({e.examID}, {e.userID}, default, {e.result});";
+            string sql = $"insert into examination output inserted.id values ({e.examID}, {e.userID}, default, {e.result}, default);";
 
             return await _db.insertDataWithReturn(sql);
+        }
+
+        public async Task<bool> updateExaminationResultAsync(int result, int examinationID, int userID) {
+            string sql = $"update examination set result = {result}, evaluated = 1 where ID = {examinationID} and userID = {userID}";
+
+            return await _db.insertData(sql);
         }
     }
 }

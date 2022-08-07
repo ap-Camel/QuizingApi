@@ -4,6 +4,7 @@ using QuizingApi.Models;
 namespace QuizingApi.Services.LocalDb.Interfaces {
     public interface IExamData {
         Task<ExamModel> getExamAsync(int userID, int examID);
+        Task<ExamModel> getExamByIdAsync(int examID);
         Task<IEnumerable<ExamModel>> getExamsAsync(int userID);
          Task<int> insertExamAsync(ExamInsertDto exam, int userID);
          Task<bool> updateExamAsync(ExamUpdateDto updateExam, int userID);

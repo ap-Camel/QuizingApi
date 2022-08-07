@@ -5,5 +5,6 @@ namespace QuizingApi.Models {
         public int userID {get; init;}
         public DateTime atDate {get; init;}
         public int result {get; init;}
+        public bool evaluated {get; init;}
     }
 }

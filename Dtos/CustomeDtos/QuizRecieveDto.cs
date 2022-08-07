@@ -9,5 +9,8 @@ namespace QuizingApi.Dtos.CustomeDtos {
 
         [Required]
         public List<QuestionEvaluateDto> quiz {get; init;}
+
+        [Required]
+        public int examinationID {get; set;}
     }
 }
