@@ -11,6 +11,7 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<bool> updateWebUserAsync(WebUserUpdateDto updateUser, int id);
         Task<bool> deleteWebUserAsync(int id);
         Task<bool> updateUsernameAsync(string newUserName, int id);
+        Task<WebUser> getWebUserByUsernameAsync(string username);
 
     }
 }

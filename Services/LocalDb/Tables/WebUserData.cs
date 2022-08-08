@@ -60,5 +60,11 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
             return await _db.insertData(sql);
         }
+
+        public async Task<WebUser> getWebUserByUsernameAsync(string username) {
+            string sql = $"select top 1 * from webUser where username = '{username}'";
+
+            return await _db.LoadSingle<WebUser>(sql);
+        }
     }
 }

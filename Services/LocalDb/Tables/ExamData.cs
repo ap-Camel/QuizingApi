@@ -54,5 +54,11 @@ namespace QuizingApi.Services.LocalDb.Tables {
             return await _db.LoadSingle<ExamModel>(sql);
         }
 
+        public async Task<IQueryable<ExamModel>> getAllExamsAsync() {
+            string sql = $"select * from exam";
+
+            return (await _db.LoadMany<ExamModel>(sql)).AsQueryable();
+        }
+
     }
 }

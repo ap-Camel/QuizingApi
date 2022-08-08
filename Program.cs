@@ -19,6 +19,7 @@ builder.Services.AddSingleton<IQuestionData, QuestionData>();
 builder.Services.AddSingleton<IAnswerData, AnswerData>();
 builder.Services.AddSingleton<IExaminationData, ExaminationData>();
 builder.Services.AddSingleton<IChoosenQAData, ChoosenQAData>();
+builder.Services.AddSingleton<IFollowersData, FollowersData>();
 
 
 builder.Services.AddCors(options =>
@@ -62,6 +63,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 

@@ -6,9 +6,10 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<ExamModel> getExamAsync(int userID, int examID);
         Task<ExamModel> getExamByIdAsync(int examID);
         Task<IEnumerable<ExamModel>> getExamsAsync(int userID);
-         Task<int> insertExamAsync(ExamInsertDto exam, int userID);
-         Task<bool> updateExamAsync(ExamUpdateDto updateExam, int userID);
-         Task<bool> deleteExamAsync(int examID, int userID);
-         Task<ExamModel> verifyExamOwnerAsync(int userID, int examID);
+        Task<int> insertExamAsync(ExamInsertDto exam, int userID);
+        Task<bool> updateExamAsync(ExamUpdateDto updateExam, int userID);
+        Task<bool> deleteExamAsync(int examID, int userID);
+        Task<ExamModel> verifyExamOwnerAsync(int userID, int examID);
+        Task<IQueryable<ExamSearchReturnDto>> getAllExamsAsync();
     }
 }

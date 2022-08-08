@@ -17,6 +17,20 @@ namespace QuizingApi.Controllers {
             this.examData = examData;
         }
 
+        
+        [HttpGet("/exam/search/{title:string}")]
+        public async Task<ActionResult<List<ExamSearchReturnDto>>> searchExam(string title) {
+
+            IQueryable<ExamSearchReturnDto> query = await examData.getAllExamsAsync();
+
+            if(!string.IsNullOrEmpty(title)) {
+                query = query.Where( e => e.title.ToLower().Contains(title));
+            }
+
+            return Ok(query);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamEssentialsDto>> getExamAsync(int id) {
 
