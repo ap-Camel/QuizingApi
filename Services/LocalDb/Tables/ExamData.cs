@@ -54,10 +54,10 @@ namespace QuizingApi.Services.LocalDb.Tables {
             return await _db.LoadSingle<ExamModel>(sql);
         }
 
-        public async Task<IQueryable<ExamModel>> getAllExamsAsync() {
-            string sql = $"select * from exam";
+        public async Task<IQueryable<ExamSearchReturnDto>> getAllExamsAsync() {
+            string sql = $"select exam.ID, exam.title, exam.duration, exam.difficulty, count(examination.ID) as count from exam left join examination on exam.ID = examination.examID group by exam.ID, exam.title, exam.duration, exam.difficulty";
 
-            return (await _db.LoadMany<ExamModel>(sql)).AsQueryable();
+            return (await _db.LoadMany<ExamSearchReturnDto>(sql)).AsQueryable();
         }
 
     }

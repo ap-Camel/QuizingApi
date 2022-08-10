@@ -18,7 +18,7 @@ namespace QuizingApi.Controllers {
         }
 
         
-        [HttpGet("/exam/search/{title:string}")]
+        [HttpGet("/exam/search/{title}")]
         public async Task<ActionResult<List<ExamSearchReturnDto>>> searchExam(string title) {
 
             IQueryable<ExamSearchReturnDto> query = await examData.getAllExamsAsync();
