@@ -8,5 +8,7 @@ namespace QuizingApi.Dtos.ExamDtos {
         public int difficulty {get; init;}
         public DateTime dateCreated {get; init;}
         public DateTime dateUpdated {get; init;}
+        public string imgURL {get; init;}
+
     }
 }

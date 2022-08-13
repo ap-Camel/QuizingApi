@@ -8,6 +8,7 @@ namespace QuizingApi.Models{
         public int difficulty {get; init;}
         public DateTime dateCreated {get; init;}
         public DateTime dateUpdated {get; init;}
+        public string imgURL {get; init;}
         public int userID {get; init;}
     }
 }

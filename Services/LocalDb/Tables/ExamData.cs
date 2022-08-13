@@ -30,13 +30,13 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
         public async Task<int> insertExamAsync(ExamInsertDto exam, int userID) {
-            string sql = $"insert into exam output inserted.id values ('{exam.title}', {exam.numOfQuestions}, {exam.duration}, {Convert.ToInt16(exam.active)}, {exam.difficulty}, default, default, {userID})";
+            string sql = $"insert into exam output inserted.id values ('{exam.title}', {exam.numOfQuestions}, {exam.duration}, {Convert.ToInt16(exam.active)}, {exam.difficulty}, default, default, {userID}, {(string.IsNullOrEmpty(exam.imgURL) ? "default" : exam.imgURL)})";
 
             return await _db.insertDataWithReturn(sql);
         }
 
         public async Task<bool> updateExamAsync(ExamUpdateDto updateExam, int userID) {
-            string sql = $"update exam set title = '{updateExam.title}', numOfQuestions = '{updateExam.numOfQuestions}', duration = {updateExam.duration}, active = {Convert.ToInt16(updateExam.active)}, difficulty = {updateExam.difficulty}, dateUpdated = getdate() where userID = {userID}";
+            string sql = $"update exam set title = '{updateExam.title}', numOfQuestions = '{updateExam.numOfQuestions}', duration = {updateExam.duration}, active = {Convert.ToInt16(updateExam.active)}, difficulty = {updateExam.difficulty}, dateUpdated = getdate(), imgURL = {updateExam.imgURL} where userID = {userID}";
 
             return await _db.insertData(sql);
         }
@@ -55,7 +55,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
         public async Task<IQueryable<ExamSearchReturnDto>> getAllExamsAsync() {
-            string sql = $"select exam.ID, exam.title, exam.duration, exam.difficulty, count(examination.ID) as count from exam left join examination on exam.ID = examination.examID group by exam.ID, exam.title, exam.duration, exam.difficulty";
+            string sql = $"select exam.ID, exam.title, exam.duration, exam.difficulty, exam.imgURL, count(examination.ID) as count from exam left join examination on exam.ID = examination.examID group by exam.ID, exam.title, exam.duration, exam.difficulty, exam.imgURL";
 
             return (await _db.LoadMany<ExamSearchReturnDto>(sql)).AsQueryable();
         }

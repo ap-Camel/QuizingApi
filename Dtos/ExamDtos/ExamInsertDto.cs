@@ -21,5 +21,8 @@ namespace QuizingApi.Dtos.ExamDtos {
         [Required(ErrorMessage = "exam difficulty is required")]
         [Range(0, 5, ErrorMessage = "exam difficulty must be between 0 and 5")]
         public int difficulty {get; init;}
+
+        public string imgURL {get; init;}
+
     }
 }

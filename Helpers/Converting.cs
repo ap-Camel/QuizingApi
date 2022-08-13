@@ -23,7 +23,8 @@ namespace QuizingApi.Helpers {
                 active = exam.active,
                 difficulty = exam.difficulty,
                 dateCreated = exam.dateCreated,
-                dateUpdated = exam.dateUpdated
+                dateUpdated = exam.dateUpdated,
+                imgURL = exam.imgURL
 
             };
         }
