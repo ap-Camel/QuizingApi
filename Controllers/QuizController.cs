@@ -37,7 +37,7 @@ namespace QuizingApi.Controllers {
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> getQuizAsync(int id) {
+        public async Task<ActionResult<QuizSendDto>> getQuizAsync(int id) {
 
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 

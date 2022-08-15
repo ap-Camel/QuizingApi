@@ -17,6 +17,7 @@ namespace QuizingApi.Helpers {
 
         public static ExamEssentialsDto toExamEssentials(ExamModel exam) {
             return new ExamEssentialsDto {
+                ID = exam.ID,
                 title = exam.title,
                 numOfQuestions = exam.numOfQuestions,
                 duration = exam.duration,

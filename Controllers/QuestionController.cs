@@ -136,6 +136,31 @@ namespace QuizingApi.Controllers {
         }
 
 
+        [HttpGet("/question/withAnswers")]
+        public async Task<ActionResult<List<QuestionEssentialsWithAnswersDto>>> getQuestionsWithAnswersAsync(int examID) {
+
+            int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
+
+            var questionsList = await questionData.getQuestionsByExamIdAsync(examID);
+
+            if(!questionsList.Any()) {
+                return NotFound("no questions were found");
+            }
+
+            List<QuestionEssentialsWithAnswersDto> list = new List<QuestionEssentialsWithAnswersDto>();
+            QuestionEssentialsWithAnswersDto temp;
+            foreach (QuestionModel q in questionsList) {
+                temp = new QuestionEssentialsWithAnswersDto {
+                    question = Converting.toQuestionEssentials(q),
+                    answers = await answerData.getAnswersByQuestionIdAync(q.ID, userID)
+                };
+                list.Add(temp);
+            }
+
+            return Ok(list);
+        }
+
+
         // [HttpDelete("{id}")]
         // public async Task<ActionResult<bool>> deleteQuestionAsync(int id){
 
