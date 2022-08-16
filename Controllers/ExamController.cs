@@ -12,9 +12,13 @@ namespace QuizingApi.Controllers {
     [Authorize]
     public class ExamController : ControllerBase {
         private readonly IExamData examData;
+        private readonly IQuestionData questionData;
+        private readonly IAnswerData answerData;
 
-        public ExamController(IExamData examData){
+        public ExamController(IExamData examData, IQuestionData questionData, IAnswerData answerData){
             this.examData = examData;
+            this.questionData = questionData;
+            this.answerData = answerData;
         }
 
         
@@ -87,11 +91,40 @@ namespace QuizingApi.Controllers {
         }
 
 
-        // [HttpDelete]
-        // public async Task<ActionResult<bool>> deleteExamAsync(int examID) {
+        [HttpDelete("{examID}")]
+        public async Task<ActionResult<bool>> deleteExamAsync(int examID) {
 
-        //     int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
-        // }
+            int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
+
+            var questions = await questionData.getQuestionsByExamIdAsync(examID);
+
+            bool deleted = true;
+            foreach(QuestionModel q in questions) {
+                var deleteA = await answerData.deleteAnswerByQuestionIdAsync(q.ID);
+                if(deleteA == false) {
+                    deleted = false;
+                }
+            }
+
+            if(!deleted) {
+                return BadRequest("something wrong happened while deleting the answers, was not able to delete exam");
+            }
+
+            var deleteQ = await questionData.deleteQuestionsByExamIdAsync(examID);
+
+            if(!deleteQ) {
+                return BadRequest("answers were deleted but something wrong happened while deleting questions, " +
+                "exam was not deleted");
+            }
+
+            var deleteE = await examData.deleteExamAsync(examID, userID);
+
+            if(!deleteE) {
+                return BadRequest("questions and asnwers were deleted, but something wrong happened while deleting exam, was not deleted");
+            }
+
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
 
 
     }

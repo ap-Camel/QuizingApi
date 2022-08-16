@@ -144,7 +144,7 @@ namespace QuizingApi.Controllers {
             var questionsList = await questionData.getQuestionsByExamIdAsync(examID);
 
             if(!questionsList.Any()) {
-                return NotFound("no questions were found");
+                return Ok(new List<QuestionEssentialsWithAnswersDto>());
             }
 
             List<QuestionEssentialsWithAnswersDto> list = new List<QuestionEssentialsWithAnswersDto>();
