@@ -36,7 +36,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
         public async Task<bool> updateExamAsync(ExamUpdateDto updateExam, int userID) {
-            string sql = $"update exam set title = '{updateExam.title}', numOfQuestions = '{updateExam.numOfQuestions}', duration = {updateExam.duration}, active = {Convert.ToInt16(updateExam.active)}, difficulty = {updateExam.difficulty}, dateUpdated = getdate(), imgURL = {updateExam.imgURL} where userID = {userID} and ID = {updateExam.ID}";
+            string sql = $"update exam set title = '{updateExam.title}', numOfQuestions = {updateExam.numOfQuestions}, duration = {updateExam.duration}, active = {Convert.ToInt16(updateExam.active)}, difficulty = {updateExam.difficulty}, dateUpdated = getdate(), imgURL = '{updateExam.imgURL}' where userID = {userID} and ID = {updateExam.ID}";
 
             return await _db.insertData(sql);
         }
