@@ -44,6 +44,10 @@ namespace QuizingApi.Controllers {
             var exam = await examData.getExamAsync(userID, id);
             var questions = await questionData.getQuestionsByExamIdAsync(exam.ID);
 
+            if(!questions.Any()) {
+                return(NotFound("this exam does not have any questoins"));
+            }
+
             QuizSendDto send = new QuizSendDto();
             List<QuestionMinimumDto> tempList = new List<QuestionMinimumDto>();
             send.examID = exam.ID;

@@ -161,6 +161,19 @@ namespace QuizingApi.Controllers {
         }
 
 
+        [HttpGet("/question/onlyTitle")]
+        public async Task<ActionResult<List<string>>> getQuestoinsWithOnlyTitleAsync(int examID) {
+            var questoinList = await questionData.getQuestionsByExamIdAsync(examID);
+
+            if(!questoinList.Any()) {
+                return Ok(new List<string>());
+            }
+            
+            List<string> list = questoinList.Select(item => item.question).ToList();
+            return Ok(list);
+        }
+
+
         // [HttpDelete("{id}")]
         // public async Task<ActionResult<bool>> deleteQuestionAsync(int id){
 
