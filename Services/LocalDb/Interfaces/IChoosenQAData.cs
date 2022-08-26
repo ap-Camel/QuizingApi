@@ -9,7 +9,7 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<int> insertCQAasync(ChoosenQAInsertDto insert);
         Task<int> insertCQA_WithoutAnswerAsync(ChoosenQAInsertDto insert);
         Task<bool> deleteCQA_ByIdAsync(int CQA_id, int examinationID);
-        Task<bool> updateCQA_AnswerIdAsync(int answerID, int questionID, int examinationID);
+        Task<bool> updateCQA_AnswerIdAsync(int answerID, int questionID, int examinationID, bool result);
         Task<IEnumerable<int>> getQuestionIdsFromExaminationAsync(int examinationID, int userID);
     }
 }

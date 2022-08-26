@@ -51,6 +51,7 @@ namespace QuizingApi.Controllers {
             QuizSendDto send = new QuizSendDto();
             List<QuestionMinimumDto> tempList = new List<QuestionMinimumDto>();
             send.examID = exam.ID;
+            send.duration = exam.duration;
 
             var result = randomizeQuestions(questions.ToList(), exam.difficulty, exam.numOfQuestions);
 
@@ -146,7 +147,7 @@ namespace QuizingApi.Controllers {
             bool updateFailed = false;
             foreach(QuestionEvaluateDto q in quiz.quiz) {
                 var answerResult = await answerData.checkAnswerAsync(q.answer, q.questionID);
-                var updateCQA_Result = await choosenQAData.updateCQA_AnswerIdAsync(answerResult.ID, q.questionID, quiz.examinationID);
+                var updateCQA_Result = await choosenQAData.updateCQA_AnswerIdAsync(answerResult.ID, q.questionID, quiz.examinationID, answerResult.correct);
                 if(answerResult.correct == true) {
                     mark += 1;
                 }

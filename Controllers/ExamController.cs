@@ -35,6 +35,15 @@ namespace QuizingApi.Controllers {
         }
 
 
+        [HttpGet("/exam/topExams/{number}")]
+        public async Task<ActionResult<List<ExamSearchReturnDto>>> getTopExamsAsync(int number) {
+
+            var list = await examData.getTopExams(number);
+
+            return Ok(list);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamEssentialsDto>> getExamAsync(int id) {
 

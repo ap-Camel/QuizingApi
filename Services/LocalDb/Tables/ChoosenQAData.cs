@@ -47,8 +47,8 @@ namespace QuizingApi.Services.LocalDb.Tables {
             return await _db.insertData(sql);
         }
 
-        public async Task<bool> updateCQA_AnswerIdAsync(int answerID, int questionID, int examinationID) {
-            string sql = $"update choosenQuestionsAnswers set answerID = {answerID} where questionID = {questionID} and examinationID = {examinationID}";
+        public async Task<bool> updateCQA_AnswerIdAsync(int answerID, int questionID, int examinationID, bool result) {
+            string sql = $"update choosenQuestionsAnswers set answerID = {answerID}, correct = {Convert.ToInt16(result)} where questionID = {questionID} and examinationID = {examinationID}";
 
             return await _db.insertData(sql);
         }

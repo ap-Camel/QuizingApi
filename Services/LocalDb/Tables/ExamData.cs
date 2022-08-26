@@ -60,5 +60,11 @@ namespace QuizingApi.Services.LocalDb.Tables {
             return (await _db.LoadMany<ExamSearchReturnDto>(sql)).AsQueryable();
         }
 
+        public async Task<IEnumerable<ExamSearchReturnDto>> getTopExams(int number) {
+            string sql = $"select top {number} exam.ID, exam.title, exam.duration, exam.difficulty, exam.imgURL, count(examination.ID) as count from exam left join examination on exam.ID = examination.examID group by exam.ID, exam.title, exam.duration, exam.difficulty, exam.imgURL ORDER BY count DESC;";
+
+            return await _db.LoadMany<ExamSearchReturnDto>(sql);
+        }
+
     }
 }
