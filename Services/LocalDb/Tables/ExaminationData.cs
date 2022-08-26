@@ -16,7 +16,7 @@ namespace QuizingApi.Services.LocalDb.Tables {
 
         public async Task<IEnumerable<ExaminationModel>> getExaminationsByUserIdAsync(int userID)
         {
-            string sql = $"select * from examination where userID = {userID}";
+            string sql = $"select * from examination where userID = {userID} order by atDate DESC";
 
             return await _db.LoadMany<ExaminationModel>(sql);
         }

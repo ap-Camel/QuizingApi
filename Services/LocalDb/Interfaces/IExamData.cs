@@ -12,5 +12,6 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<ExamModel> verifyExamOwnerAsync(int userID, int examID);
         Task<IQueryable<ExamSearchReturnDto>> getAllExamsAsync();
         Task<IEnumerable<ExamSearchReturnDto>> getTopExams(int number);
+        Task<IEnumerable<ExamSearchReturnDto>> getExamsByUsername(string username);
     }
 }

@@ -14,11 +14,13 @@ namespace QuizingApi.Controllers {
         private readonly IExamData examData;
         private readonly IQuestionData questionData;
         private readonly IAnswerData answerData;
+        private readonly IWebUserData webUserData;
 
-        public ExamController(IExamData examData, IQuestionData questionData, IAnswerData answerData){
+        public ExamController(IExamData examData, IQuestionData questionData, IAnswerData answerData, IWebUserData webUserData){
             this.examData = examData;
             this.questionData = questionData;
             this.answerData = answerData;
+            this.webUserData = webUserData;
         }
 
         
@@ -44,6 +46,15 @@ namespace QuizingApi.Controllers {
         }
 
 
+        [HttpGet("/exam/username/{username}")]
+        public async Task<ActionResult> getExamsByUsernameAsync(string username) {
+
+            var list = await examData.getExamsByUsername(username);
+
+            return Ok(list);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamEssentialsDto>> getExamAsync(int id) {
 
@@ -55,7 +66,11 @@ namespace QuizingApi.Controllers {
                 return NotFound("no exam was found");
             }
 
-            return Ok(Helpers.Converting.toExamEssentials(result));
+            var user = await webUserData.getWebUserByIdAsync(result.userID);
+            ExamEssentialsDto exam = Helpers.Converting.toExamEssentials(result);
+            exam.username = user.userName;
+
+            return Ok(exam);
         }
 
         [HttpGet]

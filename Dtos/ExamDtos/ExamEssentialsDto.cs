@@ -9,6 +9,7 @@ namespace QuizingApi.Dtos.ExamDtos {
         public DateTime dateCreated {get; init;}
         public DateTime dateUpdated {get; init;}
         public string imgURL {get; init;}
+        public string username {get; set;}
 
     }
 }
