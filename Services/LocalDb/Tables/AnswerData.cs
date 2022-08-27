@@ -39,12 +39,12 @@ namespace QuizingApi.Services.LocalDb.Tables {
         }
 
 
-        public async Task<IEnumerable<AnswerModel>> getAnswersByQuestionIdAync(int questionID, int userID) {
+        public async Task<IEnumerable<AnswerModel>> getAnswersByQuestionIdAync(int questionID) {
             string sql = "select answer.* from answer " + 
                         "join question on answer.questionID = question.ID " +
                         "join exam on question.examID = exam.ID " +
                         "join webUser on exam.userID = webUser.ID " +
-                        $"where webUser.ID = {userID} and question.ID = {questionID}";
+                        $"where question.ID = {questionID}";
 
             return await _db.LoadMany<AnswerModel>(sql);
         }

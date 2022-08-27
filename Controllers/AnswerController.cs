@@ -53,7 +53,7 @@ namespace QuizingApi.Controllers {
         public async Task<ActionResult<List<AnswerEssentialsDto>>> getAnswersByQuestoinIdAsync(int questionId) {
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            var result = await answerData.getAnswersByQuestionIdAync(questionId, userID);
+            var result = await answerData.getAnswersByQuestionIdAync(questionId);
 
             if(result.Count() == 0) {
                 return NotFound("no answers were found");

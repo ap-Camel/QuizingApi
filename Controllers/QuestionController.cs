@@ -152,7 +152,7 @@ namespace QuizingApi.Controllers {
             foreach (QuestionModel q in questionsList) {
                 temp = new QuestionEssentialsWithAnswersDto {
                     question = Converting.toQuestionEssentials(q),
-                    answers = await answerData.getAnswersByQuestionIdAync(q.ID, userID)
+                    answers = await answerData.getAnswersByQuestionIdAync(q.ID)
                 };
                 list.Add(temp);
             }

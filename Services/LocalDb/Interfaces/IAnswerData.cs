@@ -6,7 +6,7 @@ namespace QuizingApi.Services.LocalDb.Interfaces {
         Task<AnswerModel> getAnswerByUserIdAsync(int answerID, int userID);
         Task<AnswerModel> getAnswerByIdAsync(int answerID);
         Task<IEnumerable<AnswerModel>> getAnswersByUserIdAsync(int userID);
-        Task<IEnumerable<AnswerModel>> getAnswersByQuestionIdAync(int questionID, int userID);
+        Task<IEnumerable<AnswerModel>> getAnswersByQuestionIdAync(int questionID);
         Task<int> insertAnswerAsync(AnswerInsertDto answer);
         Task<bool> updateAnswerAsync(AnswerUpdateDto answer);
         Task<bool> deleteAnswerAsync(int answerID, int questionID);

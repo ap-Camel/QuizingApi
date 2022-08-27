@@ -57,7 +57,7 @@ namespace QuizingApi.Controllers {
             var result = randomizeQuestions(questions.ToList(), exam.difficulty, exam.numOfQuestions);
 
             foreach(QuestionModel q in result) {
-                var answers = await answerData.getAnswersByQuestionIdAync(q.ID, userID);
+                var answers = await answerData.getAnswersByQuestionIdAync(q.ID);
                 List<string> randomizedAnswers = randomizeAnswers(answers.ToList());
                 QuestionMinimumDto temp = new QuestionMinimumDto {
                     questionID = q.ID,
