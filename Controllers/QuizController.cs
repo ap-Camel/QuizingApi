@@ -185,20 +185,20 @@ namespace QuizingApi.Controllers {
             double step = 1.1;
             double difficulty02 = difficulty * step;
 
-            veryHard = (int)Math.Round(( veryHarsPer + (((difficulty02 / 10.00) / 2) * (0.33 + (difficulty - 3) * 0.08))) * num);
-            hard = (int)Math.Round(( hardPer + (((difficulty02 / 10.00) / 2) * (0.66 - (difficulty - 3) * 0.08))) * num);
-            normal = (int)Math.Round((normalPer - (((difficulty02 / 10.00) / 2) * 0.1)) * num);
-            easy = (int)Math.Round((easyPer - (((difficulty02 / 10.00) / 2) * 0.3)) * num);
-            veryEasy = (int)Math.Round((veryEasyPer - (((difficulty02 / 10.00) / 2) * 0.6)) * num);
+            veryHard = (int)Math.Round(( veryHarsPer + (((difficulty02 / 10.00) / 2) * (0.33 + (difficulty - 3) * 0.08))) * count);
+            hard = (int)Math.Round(( hardPer + (((difficulty02 / 10.00) / 2) * (0.66 - (difficulty - 3) * 0.08))) * count);
+            normal = (int)Math.Round((normalPer - (((difficulty02 / 10.00) / 2) * 0.1)) * count);
+            easy = (int)Math.Round((easyPer - (((difficulty02 / 10.00) / 2) * 0.3)) * count);
+            veryEasy = (int)Math.Round((veryEasyPer - (((difficulty02 / 10.00) / 2) * 0.6)) * count);
 
             sum = (veryHard + hard + normal + easy + veryEasy);
 
-            if(sum > num) {
-                veryHard -= (sum - num);
+            if(sum > count) {
+                veryHard -= (sum - count);
             }
 
-            if(sum < num) {
-                veryEasy += (num - sum);
+            if(sum < count) {
+                veryEasy += (count - sum);
             }
 
             int[] arrNumbers = new int[] {
