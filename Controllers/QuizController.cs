@@ -41,7 +41,9 @@ namespace QuizingApi.Controllers {
 
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            var exam = await examData.getExamAsync(userID, id);
+            
+            //var exam = await examData.getExamAsync(userID, id);
+            var exam = await examData.getExamByIdAsync(id);
             var questions = await questionData.getQuestionsByExamIdAsync(exam.ID);
 
             if(!questions.Any()) {
