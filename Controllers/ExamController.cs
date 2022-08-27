@@ -60,7 +60,8 @@ namespace QuizingApi.Controllers {
 
             int userID = JwtHelpers.getGeneralID(HttpContext.Request.Headers["Authorization"]);
 
-            var result = await examData.getExamAsync(userID, id);
+            //var result = await examData.getExamAsync(userID, id);
+            var result = await examData.getExamByIdAsync(id);
 
             if(result is null) {
                 return NotFound("no exam was found");
