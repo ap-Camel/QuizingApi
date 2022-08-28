@@ -2,6 +2,7 @@
 
 # Api Description
 
+- api is made with .NET core web api and C# using .NET version 6.0 LTS
 - this api is for a simple quizing website [link here](https://quizingwebsite.azurewebsites.net/)
 - api handles user authentication and authorization, also implements JWT.
 - api handles manipulating of user, exam, question, answer, examination, and follower data.
@@ -19,7 +20,6 @@
 # Dependencies 
 
 - dapper is used for ORM of choice [link here](https://github.com/DapperLib/Dapper).
-- using .NET version 6.0 LTS
 - using Microsoft.IdentityModel.Tokens [link here](https://www.nuget.org/packages/Microsoft.IdentityModel.Tokens/)
 - using System.IdentityModel.Tokens.Jwt [link here](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/)
 - using Microsoft.AspNetCore.Authentication.JwtBearer [link here](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer)
