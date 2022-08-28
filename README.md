@@ -69,17 +69,7 @@
 - the generated list of questions is based on the difficulty of the exam and difficulty of each question based on 5 difficulty levels: (very easy, easy, normal, hard, very hard).
 - evaluated exam can not be evaluated agina.
 - once exam generated, all data generated of user and the questions they got, after evaluation, the data is updated with which answers they chose.
-
-## User controller
-
-![](https://github.com/ap-Camel/QuizingApi/blob/master/github-pictures/Screenshot%202022-08-28%20064103.png)
-
-- this controller handles manipulating the user data.
-- handles adding, deleting, updating user information.
-- handles getting user information.
-- handles updating user's username
 - example of a generated examination:
-
 ``` json
 {
     "examID": 25,
@@ -109,6 +99,15 @@
     "duration": 30
 }
 ```
+
+## User controller
+
+![](https://github.com/ap-Camel/QuizingApi/blob/master/github-pictures/Screenshot%202022-08-28%20064103.png)
+
+- this controller handles manipulating the user data.
+- handles adding, deleting, updating user information.
+- handles getting user information.
+- handles updating user's username
 
 
 ## Exam Controller
